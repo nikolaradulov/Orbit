@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, The ORBIT Project Developers.
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -43,7 +43,6 @@ import carb
 import omni.isaac.orbit.envs.mdp as mdp
 import omni.isaac.orbit.sim as sim_utils
 from omni.isaac.orbit.assets import ArticulationCfg, AssetBaseCfg
-from omni.isaac.orbit.assets.config.anymal import ANYMAL_C_CFG
 from omni.isaac.orbit.envs import BaseEnv, BaseEnvCfg
 from omni.isaac.orbit.managers import ObservationGroupCfg as ObsGroup
 from omni.isaac.orbit.managers import ObservationTermCfg as ObsTerm
@@ -53,13 +52,14 @@ from omni.isaac.orbit.scene import InteractiveSceneCfg
 from omni.isaac.orbit.sensors import RayCasterCfg, patterns
 from omni.isaac.orbit.terrains import TerrainImporterCfg
 from omni.isaac.orbit.utils import configclass
-from omni.isaac.orbit.utils.assets import ISAAC_ORBIT_NUCLEUS_DIR, check_file_path
+from omni.isaac.orbit.utils.assets import ISAAC_ORBIT_NUCLEUS_DIR, check_file_path, read_file
 from omni.isaac.orbit.utils.noise import AdditiveUniformNoiseCfg as Unoise
 
 ##
 # Pre-defined configs
 ##
 from omni.isaac.orbit.terrains.config.rough import ROUGH_TERRAINS_CFG  # isort: skip
+from omni.isaac.orbit_assets.anymal import ANYMAL_C_CFG  # isort: skip
 
 
 ##
@@ -215,11 +215,13 @@ def main():
 
     # load level policy
     policy_path = os.path.join(ISAAC_ORBIT_NUCLEUS_DIR, "Policies", "ANYmal-C", "policy.pt")
+
     # check if policy file exists
     if not check_file_path(policy_path):
         raise FileNotFoundError(f"Policy file '{policy_path}' does not exist.")
+    file_bytes = read_file(policy_path)
     # jit load the policy
-    locomotion_policy = torch.jit.load(policy_path)
+    locomotion_policy = torch.jit.load(file_bytes)
     locomotion_policy.to(env.device)
     locomotion_policy.eval()
 

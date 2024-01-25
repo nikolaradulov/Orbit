@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, The ORBIT Project Developers.
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -134,8 +134,6 @@ class ContactSensor(SensorBase):
         if self.cfg.track_air_time:
             self._data.current_air_time[env_ids] = 0.0
             self._data.last_air_time[env_ids] = 0.0
-        # Set all reset sensors to not outdated since their value won't be updated till next sim step.
-        self._is_outdated[env_ids] = False
 
     def find_bodies(self, name_keys: str | Sequence[str]) -> tuple[list[int], list[str]]:
         """Find bodies in the articulation based on the name keys.
@@ -210,12 +208,11 @@ class ContactSensor(SensorBase):
         if self.cfg.track_air_time:
             self._data.last_air_time = torch.zeros(self._num_envs, self._num_bodies, device=self._device)
             self._data.current_air_time = torch.zeros(self._num_envs, self._num_bodies, device=self._device)
-        # force matrix: (num_sensors, num_bodies, num_shapes, num_filter_shapes, 3)
+        # force matrix: (num_envs, num_bodies, num_filter_shapes, 3)
         if len(self.cfg.filter_prim_paths_expr) != 0:
-            num_shapes = self.contact_physx_view.sensor_count // self._num_bodies
             num_filters = self.contact_physx_view.filter_count
             self._data.force_matrix_w = torch.zeros(
-                self._num_envs, self._num_bodies, num_shapes, num_filters, 3, device=self._device
+                self._num_envs, self._num_bodies, num_filters, 3, device=self._device
             )
 
     def _update_buffers_impl(self, env_ids: Sequence[int]):
@@ -236,12 +233,11 @@ class ContactSensor(SensorBase):
 
         # obtain the contact force matrix
         if len(self.cfg.filter_prim_paths_expr) != 0:
-            # shape of the filtering matrix: (num_sensors, num_bodies, num_shapes, num_filter_shapes, 3)
-            num_shapes = self.contact_physx_view.sensor_count // self._num_bodies
+            # shape of the filtering matrix: (num_envs, num_bodies, num_filter_shapes, 3)
             num_filters = self.contact_physx_view.filter_count
             # acquire and shape the force matrix
             force_matrix_w = self.contact_physx_view.get_contact_force_matrix(dt=self._sim_physics_dt)
-            force_matrix_w = force_matrix_w.view(-1, self._num_bodies, num_shapes, num_filters, 3)
+            force_matrix_w = force_matrix_w.view(-1, self._num_bodies, num_filters, 3)
             self._data.force_matrix_w[env_ids] = force_matrix_w[env_ids]
         # obtain the pose of the sensor origin
         if self.cfg.track_pose:
@@ -293,3 +289,16 @@ class ContactSensor(SensorBase):
             frame_origins = pose.view(-1, self._num_bodies, 7)[:, :, :3]
         # visualize
         self.contact_visualizer.visualize(frame_origins.view(-1, 3), marker_indices=marker_indices.view(-1))
+
+    """
+    Internal simulation callbacks.
+    """
+
+    def _invalidate_initialize_callback(self, event):
+        """Invalidates the scene elements."""
+        # call parent
+        super()._invalidate_initialize_callback(event)
+        # set all existing views to None to invalidate them
+        self._physics_sim_view = None
+        self._body_physx_view = None
+        self._contact_physx_view = None

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, The ORBIT Project Developers.
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -210,10 +210,10 @@ class DCMotor(IdealPDActuator):
     def _clip_effort(self, effort: torch.Tensor) -> torch.Tensor:
         # compute torque limits
         # -- max limit
-        max_effort = self.cfg.saturation_effort * (1.0 - self._joint_vel / self.velocity_limit)
+        max_effort = self._saturation_effort * (1.0 - self._joint_vel / self.velocity_limit)
         max_effort = torch.clip(max_effort, min=self._zeros_effort, max=self.effort_limit)
         # -- min limit
-        min_effort = self.cfg.saturation_effort * (-1.0 - self._joint_vel / self.velocity_limit)
+        min_effort = self._saturation_effort * (-1.0 - self._joint_vel / self.velocity_limit)
         min_effort = torch.clip(min_effort, min=-self.effort_limit, max=self._zeros_effort)
 
         # clip the torques based on the motor limits

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, The ORBIT Project Developers.
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -55,7 +55,7 @@ class TestStableBaselines3VecEnvWrapper(unittest.TestCase):
 
     def setUp(self) -> None:
         # common parameters
-        self.num_envs = 512
+        self.num_envs = 64
         self.use_gpu = True
 
     def test_random_actions(self):

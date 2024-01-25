@@ -96,10 +96,11 @@ The ``orbit`` repository is structured as follows:
    │   │   └── omni.isaac.orbit_tasks
    │   │   └── omni.isaac.contrib_tasks
    │   ├── standalone
-   │   │   ├── demo
+   │   │   ├── demos
    │   │   ├── environments
+   │   │   ├── tools
+   │   │   ├── tutorials
    │   │   └── workflows
-   │   └── tools
    └── VERSION
 
 The ``source`` directory contains the source code for all ``orbit`` *extensions*

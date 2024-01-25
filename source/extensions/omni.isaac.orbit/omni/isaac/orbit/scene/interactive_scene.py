@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, The ORBIT Project Developers.
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -36,9 +36,10 @@ class InteractiveScene:
 
     .. code-block:: python
 
-        from omni.isaac.orbit.assets.config.anymal import ANYMAL_C_CFG
         from omni.isaac.orbit.scene import InteractiveSceneCfg
         from omni.isaac.orbit.utils import configclass
+
+        from omni.isaac.orbit_assets.anymal import ANYMAL_C_CFG
 
         @configclass
         class MySceneCfg(InteractiveSceneCfg):
@@ -141,7 +142,7 @@ class InteractiveScene:
         self._add_entities_from_cfg()
         # replicate physics if we have more than one environment
         # this is done to make scene initialization faster at play time
-        if self.cfg.replicate_physics:
+        if self.cfg.replicate_physics and self.cfg.num_envs > 1:
             # in isaac sim 2022.2, this function is private
             if isaac_major_version == 2022:
                 self.cloner._replicate_physics(  # pyright: ignore [reportPrivateUsage]

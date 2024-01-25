@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, The ORBIT Project Developers.
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -263,6 +263,7 @@ class CommandManager(ManagerBase):
             table.add_row([index, name, term.__class__.__name__])
         # convert table to string
         msg += table.get_string()
+        msg += "\n"
 
         return msg
 

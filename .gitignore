@@ -2,6 +2,7 @@
 **/cmake-build*/
 **/build*/
 **/*.so
+**/*.log*
 
 # Omniverse
 **/*.dmp
@@ -20,6 +21,10 @@
 **/.pytest_cache/
 **/*.pyc
 **/*.pb
+
+# Docker/Singularity
+**/*.sif
+docker/exports/
 
 # IDE
 **/.idea/
@@ -46,11 +51,6 @@ _isaac_sim*
 _repo
 _build
 .lastformat
-
-# Internal
-# TODO: Remove this once we have a better way to handle internal files.
-source/extensions/omni.isaac.assets
-source/extensions/omni.isaac.orbit_assets
 
 # RL-Games
 **/runs/*

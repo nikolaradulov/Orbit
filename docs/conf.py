@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, The ORBIT Project Developers.
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.abspath("../source/extensions/omni.isaac.orbit_tasks/
 # -- Project information -----------------------------------------------------
 
 project = "orbit"
-copyright = "2022-2023, The ORBIT Project Developers."
+copyright = "2022-2024, The ORBIT Project Developers."
 author = "The ORBIT Project Developers."
 
 version = "0.2.0"
@@ -70,6 +70,10 @@ source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
 }
+
+# make sure we don't have any unknown references
+# TODO: Enable this by default once we have fixed all the warnings
+# nitpicky = True
 
 # put type hints inside the signature instead of the description (easier to maintain)
 autodoc_typehints = "signature"
@@ -197,6 +201,7 @@ html_css_files = ["custom.css"]
 html_theme_options = {
     "collapse_navigation": True,
     "repository_url": "https://github.com/NVIDIA-Omniverse/Orbit",
+    "announcement": "We have now released v0.2.0! Please use the latest version for the best experience.",
     "use_repository_button": True,
     "use_issues_button": True,
     "use_edit_page_button": True,

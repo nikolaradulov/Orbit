@@ -20,8 +20,8 @@ Installing Isaac Sim
 
 .. caution::
 
-   While the framework contains backwards compatibility for Isaac Sim 2022.2.1, we recommend using
-   the latest Isaac Sim 2023.1.0-hotfix.1 release. This release contains various improvements on the
+   While the framework contains some backwards compatibility for Isaac Sim 2022.2.1, we recommend using
+   the latest Isaac Sim 2023.1 release. This release contains various improvements on the
    simulation side, and is the recommended version to use with Orbit.
 
    For more information, please refer to the
@@ -38,7 +38,7 @@ To check the minimum system requirements,refer to the documentation
 `here <https://docs.omniverse.nvidia.com/isaacsim/latest/installation/requirements.html>`__.
 
 .. note::
-	We have tested Orbit with Isaac Sim 2023.1.0 release on Ubuntu
+	We have tested Orbit with Isaac Sim 2023.1.0-hotfix.1 release on Ubuntu
 	20.04LTS with NVIDIA driver 525.147.
 
 Configuring the environment variables
@@ -88,7 +88,7 @@ On a new terminal (**Ctrl+Alt+T**), run the following:
 
    .. code:: bash
 
-      # note: you can pass the argument `--help` to see all arguments possible.
+      # note: you can pass the argument "--help" to see all arguments possible.
       ${ISAACSIM_PATH}/isaac-sim.sh
 
 -  Check that the simulator runs from a standalone python script:
@@ -183,7 +183,7 @@ running the following on your terminal:
 
 .. code:: bash
 
-   # note: execute the command from where the `orbit.sh` executable exists
+   # note: execute the command from where the "orbit.sh" executable exists
    # option1: for bash users
    echo -e "alias orbit=$(pwd)/orbit.sh" >> ${HOME}/.bashrc
    # option2: for zshell users
@@ -216,16 +216,16 @@ use the following command:
 .. code:: bash
 
    # Option 1: Default name for conda environment is 'orbit'
-   ./orbit.sh --conda  # or `./orbit.sh -c`
+   ./orbit.sh --conda  # or "./orbit.sh -c"
    # Option 2: Custom name for conda environment
-   ./orbit.sh --conda my_env  # or `./orbit.sh -c my_env`
+   ./orbit.sh --conda my_env  # or "./orbit.sh -c my_env"
 
 If you are using ``conda`` to create a virtual environment, make sure to
 activate the environment before running any scripts. For example:
 
 .. code:: bash
 
-   conda activate orbit  # or `conda activate my_env`
+   conda activate orbit  # or "conda activate my_env"
 
 Once you are in the virtual environment, you do not need to use ``./orbit.sh -p``
 to run python scripts. You can use the default python executable in your environment
@@ -250,7 +250,7 @@ To build all the extensions, run the following commands:
 
    .. code:: bash
 
-      ./orbit.sh --install  # or `./orbit.sh -i`
+      ./orbit.sh --install  # or "./orbit.sh -i"
 
 -  For installing all other dependencies (such as learning
    frameworks), execute:
@@ -258,10 +258,10 @@ To build all the extensions, run the following commands:
    .. code:: bash
 
       # Option 1: Install all dependencies
-      ./orbit.sh --extra  # or `./orbit.sh -e`
+      ./orbit.sh --extra  # or "./orbit.sh -e"
       # Option 2: Install only a subset of dependencies
       # note: valid options are 'rl_games', 'rsl_rl', 'sb3', 'robomimic', 'all'
-      ./orbit.sh --extra rsl_rl  # or `./orbit.sh -e rsl_rl
+      ./orbit.sh --extra rsl_rl  # or "./orbit.sh -e rsl_r"
 
 
 Verifying the installation
@@ -274,9 +274,10 @@ top of the repository:
 
    # Option 1: Using the orbit.sh executable
    # note: this works for both the bundled python and the virtual environment
-   ./orbit.sh -p source/standalone/demo/00_sim/empty.py
+   ./orbit.sh -p source/standalone/tutorials/00_sim/create_empty.py
+
    # Option 2: Using python in your virtual environment
-   python source/standalone/demo/00_sim/empty.py
+   python source/standalone/tutorials/00_sim/create_empty.py
 
 The above command should launch the simulator and display a window with a black
 ground plane. You can exit the script by pressing ``Ctrl+C`` on your terminal or

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, The ORBIT Project Developers.
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -29,11 +29,11 @@ class InteractiveSceneCfg:
 
         import omni.isaac.orbit.sim as sim_utils
         from omni.isaac.orbit.assets import AssetBaseCfg
-        from omni.isaac.orbit.assets.config.anymal import ANYMAL_C_CFG
         from omni.isaac.orbit.scene import InteractiveSceneCfg
         from omni.isaac.orbit.sensors.ray_caster import GridPatternCfg, RayCasterCfg
         from omni.isaac.orbit.utils import configclass
 
+        from omni.isaac.orbit_assets.anymal import ANYMAL_C_CFG
 
         @configclass
         class MySceneCfg(InteractiveSceneCfg):

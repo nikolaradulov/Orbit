@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2022-2023, The ORBIT Project Developers.
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -176,8 +176,14 @@ update_vscode_settings() {
     echo "[INFO] Setting up vscode settings..."
     # retrieve the python executable
     python_exe=$(extract_python_exe)
-    # run the setup script
-    ${python_exe} ${ORBIT_PATH}/.vscode/tools/setup_vscode.py
+    # path to setup_vscode.py
+    setup_vscode_script="${ORBIT_PATH}/.vscode/tools/setup_vscode.py"
+    # check if the file exists before attempting to run it
+    if [ -f "${setup_vscode_script}" ]; then
+        ${python_exe} "${setup_vscode_script}"
+    else
+        echo "[WARNING] setup_vscode.py not found. Aborting vscode settings setup."
+    fi
 }
 
 # print the usage description
@@ -190,6 +196,7 @@ print_help () {
     echo -e "\t-f, --format         Run pre-commit to format the code and check lints."
     echo -e "\t-p, --python         Run the python executable (python.sh) provided by Isaac Sim."
     echo -e "\t-s, --sim            Run the simulator executable (isaac-sim.sh) provided by Isaac Sim."
+    echo -e "\t-t, --test           Run all python unittest tests."
     echo -e "\t-o, --docker         Run the docker container helper script (docker/container.sh)."
     echo -e "\t-v, --vscode         Generate the VSCode settings file from template."
     echo -e "\t-d, --docs           Build the documentation from source using sphinx."
@@ -301,6 +308,14 @@ while [[ $# -gt 0 ]]; do
             echo "[INFO] Running isaac-sim from: ${isaacsim_exe}"
             shift # past argument
             ${isaacsim_exe} --ext-folder ${ORBIT_PATH}/source/extensions $@
+            # exit neatly
+            break
+            ;;
+        -t|--test)
+            # run the python provided by isaacsim
+            python_exe=$(extract_python_exe)
+            shift # past argument
+            ${python_exe} tools/run_all_tests.py $@
             # exit neatly
             break
             ;;

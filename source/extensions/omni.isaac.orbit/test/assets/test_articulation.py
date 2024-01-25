@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, The ORBIT Project Developers.
+# Copyright (c) 2022-2024, The ORBIT Project Developers.
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -30,8 +30,12 @@ import omni.isaac.orbit.sim as sim_utils
 import omni.isaac.orbit.utils.string as string_utils
 from omni.isaac.orbit.actuators import ImplicitActuatorCfg
 from omni.isaac.orbit.assets import Articulation, ArticulationCfg
-from omni.isaac.orbit.assets.config import ANYMAL_C_CFG, FRANKA_PANDA_ARM_WITH_PANDA_HAND_CFG
 from omni.isaac.orbit.utils.assets import ISAAC_NUCLEUS_DIR
+
+##
+# Pre-defined configs
+##
+from omni.isaac.orbit_assets import ANYMAL_C_CFG, FRANKA_PANDA_CFG  # isort:skip
 
 
 class TestArticulation(unittest.TestCase):
@@ -120,7 +124,7 @@ class TestArticulation(unittest.TestCase):
     def test_initialization_fixed_base(self):
         """Test initialization for fixed base."""
         # Create articulation
-        robot = Articulation(cfg=FRANKA_PANDA_ARM_WITH_PANDA_HAND_CFG.replace(prim_path="/World/Robot"))
+        robot = Articulation(cfg=FRANKA_PANDA_CFG.replace(prim_path="/World/Robot"))
 
         # Check that boundedness of articulation is correct
         self.assertEqual(ctypes.c_long.from_address(id(robot)).value, 1)

@@ -1,47 +1,36 @@
 Running existing scripts
 ========================
 
-API Demos
----------
+Showroom
+--------
 
 The main core interface extension in Orbit ``omni.isaac.orbit`` provides
 the main modules for actuators, objects, robots and sensors. We provide
-a list of demo scripts. These showcase how to use the provided interfaces
-within a code in a minimal way.
+a list of demo scripts and tutorials. These showcase how to use the provided
+interfaces within a code in a minimal way.
 
-A few quick demo scripts to run and checkout:
+A few quick showroom scripts to run and checkout:
 
--  Spawn different quadrupeds, visualize feet markers, and make
-   robots stand using position commands:
-
-   .. code:: bash
-
-      ./orbit.sh -p source/standalone/demo/play_quadrupeds.py
-
--  Spawn multiple Franka arms and apply random joint position commands:
+-  Spawn different quadrupeds and make robots stand using position commands:
 
    .. code:: bash
 
-      ./orbit.sh -p source/standalone/demo/play_arms.py --robot franka_panda
+      ./orbit.sh -p source/standalone/demos/quadrupeds.py
 
--  Spawn multiple robots and control them using inverse kinematics
-   controller:
-
-   .. code:: bash
-
-      ./orbit.sh -p source/standalone/demo/play_ik_control.py --robot franka_panda --num_envs 128
-
--  Spawn a camera and visualize the obtained pointcloud:
+-  Spawn different arms and apply random joint position commands:
 
    .. code:: bash
 
-      # CPU
-      ./orbit.sh -p source/standalone/demo/play_camera.py
-      # GPU
-      ./orbit.sh -p source/standalone/demo/play_camera.py --gpu
+      ./orbit.sh -p source/standalone/demos/arms.py
 
-Environments
-------------
+-  Spawn multiple markers that are useful for visualizations:
+
+   .. code:: bash
+
+      ./orbit.sh -p source/standalone/demos/markers.py
+
+Workflows
+---------
 
 With Orbit, we also provide a suite of benchmark environments included
 in the ``omni.isaac.orbit_tasks`` extension. We use the OpenAI Gym registry
@@ -84,7 +73,7 @@ allows efficient execution for large number of environments using CUDA kernels.
 
 .. code:: bash
 
-   ./orbit.sh -p source/standalone/environments/state_machine/play_lift.py --num_envs 32
+   ./orbit.sh -p source/standalone/environments/state_machine/lift_cube_sm.py --num_envs 32
 
 
 Teleoperation
@@ -99,7 +88,7 @@ To play inverse kinematics (IK) control with a keyboard device:
 
 .. code:: bash
 
-   ./orbit.sh -p source/standalone/environments/teleoperation/teleop_se3_agent.py --task Isaac-Lift-Franka-v0 --num_envs 1 --cpu --device keyboard
+   ./orbit.sh -p source/standalone/environments/teleoperation/teleop_se3_agent.py --task Isaac-Lift-Cube-Franka-IK-Rel-v0 --num_envs 1 --device keyboard
 
 The script prints the teleoperation events configured. For keyboard,
 these are as follows:
@@ -127,14 +116,14 @@ data in
 format.
 
 1. Collect demonstrations with teleoperation for the environment
-   ``Isaac-Lift-Franka-v0``:
+   ``Isaac-Lift-Cube-Franka-IK-Rel-v0``:
 
    .. code:: bash
 
       # step a: collect data with keyboard
-      ./orbit.sh -p source/standalone/workflows/robomimic/collect_demonstrations.py --task Isaac-Lift-Franka-v0 --num_envs 1 --num_demos 10 --device keyboard
+      ./orbit.sh -p source/standalone/workflows/robomimic/collect_demonstrations.py --task Isaac-Lift-Cube-Franka-IK-Rel-v0 --num_envs 1 --num_demos 10 --device keyboard
       # step b: inspect the collected dataset
-      ./orbit.sh -p source/standalone/workflows/robomimic/tools/inspect_demonstrations.py logs/robomimic/Isaac-Lift-Franka-v0/hdf_dataset.hdf5
+      ./orbit.sh -p source/standalone/workflows/robomimic/tools/inspect_demonstrations.py logs/robomimic/Isaac-Lift-Cube-Franka-IK-Rel-v0/hdf_dataset.hdf5
 
 2. Split the dataset into train and validation set:
 
@@ -143,20 +132,20 @@ format.
       # install python module (for robomimic)
       ./orbit.sh -e robomimic
       # split data
-      ./orbit.sh -p source/standalone//workflows/robomimic/tools/split_train_val.py logs/robomimic/Isaac-Lift-Franka-v0/hdf_dataset.hdf5 --ratio 0.2
+      ./orbit.sh -p source/standalone//workflows/robomimic/tools/split_train_val.py logs/robomimic/Isaac-Lift-Cube-Franka-IK-Rel-v0/hdf_dataset.hdf5 --ratio 0.2
 
-3. Train a BC agent for ``Isaac-Lift-Franka-v0`` with
+3. Train a BC agent for ``Isaac-Lift-Cube-Franka-IK-Rel-v0`` with
    `Robomimic <https://robomimic.github.io/>`__:
 
    .. code:: bash
 
-      ./orbit.sh -p source/standalone/workflows/robomimic/train.py --task Isaac-Lift-Franka-v0 --algo bc --dataset logs/robomimic/Isaac-Lift-Franka-v0/hdf_dataset.hdf5
+      ./orbit.sh -p source/standalone/workflows/robomimic/train.py --task Isaac-Lift-Cube-Franka-IK-Rel-v0 --algo bc --dataset logs/robomimic/Isaac-Lift-Cube-Franka-IK-Rel-v0/hdf_dataset.hdf5
 
 4. Play the learned model to visualize results:
 
    .. code:: bash
 
-      ./orbit.sh -p source/standalone//workflows/robomimic/play.py --task Isaac-Lift-Franka-v0 --checkpoint /PATH/TO/model.pth
+      ./orbit.sh -p source/standalone//workflows/robomimic/play.py --task Isaac-Lift-Cube-Franka-IK-Rel-v0 --checkpoint /PATH/TO/model.pth
 
 Reinforcement Learning
 ~~~~~~~~~~~~~~~~~~~~~~
